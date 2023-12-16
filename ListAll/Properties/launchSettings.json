@@ -1,0 +1,8 @@
+{
+  "profiles": {
+    "ListAll": {
+      "commandName": "Project",
+      "commandLineArgs": "--outputfile \"c:\\temp-ulf\\o.md\" --setting \"Settings\\list-directory-md.json\" -r -d \"c:\\temp\" --extensions txt"
+    }
+  }
+}

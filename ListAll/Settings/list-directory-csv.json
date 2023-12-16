@@ -1,0 +1,11 @@
+{
+  "onlydir": false,
+  "filename-with-extension": false,
+  "folder-recursive": false,
+  "output": "Filename;FileExtention;FileSize;CreationTime;folder1;folder2;folder3;Path",
+  "headers": [
+    {
+      "header": "Filename;Ext;Size;Date;Path;folder1;folder2;folder3"
+    }
+  ]
+}
