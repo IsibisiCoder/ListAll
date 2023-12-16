@@ -65,7 +65,7 @@ internal class Program
             .ConfigureServices((hostContext, services) =>
             {
                 //services.AddHostedService<ListAllService>();
-                services.AddSingleton<ListAll.Plugins.Directories.ListDirectories>();
+                services.AddSingleton<ListAll.Plugin.ListDirectories.ListDirectories>();
                 services.AddTransient<IFileService, FileService>();
                 services.AddLogging();
                 //services.AddLocalization(options => options.ResourcesPath = "Resources");
@@ -116,7 +116,7 @@ internal class Program
         using (var scope = app?.Services.CreateScope())
         {
             var services = scope?.ServiceProvider;
-            var context = services?.GetRequiredService<ListAll.Plugins.Directories.ListDirectories>();
+            var context = services?.GetRequiredService<ListAll.Plugin.ListDirectories.ListDirectories>();
             //context?.SetParameter("OutputFile", outputfilename);
             //context?.SetParameter("Outputtype", outputtype);
             //context?.SetParameter("RootDir", rootDir);

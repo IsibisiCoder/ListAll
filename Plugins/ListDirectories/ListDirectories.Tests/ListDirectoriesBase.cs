@@ -1,7 +1,7 @@
 ﻿using ListAll.Business.Services;
 using ListAll.Business.Tests.FileServiceMocks;
 
-namespace ListAll.Plugins.Directories.Tests
+namespace ListAll.Plugin.ListDirectories.Tests
 {
     public class ListDirectoriesBase
     {

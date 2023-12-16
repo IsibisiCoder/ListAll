@@ -1,15 +1,11 @@
 ﻿using System.Text;
 using ListAll.Business.Services;
 using ListAll.Business.Model;
-using Microsoft.Extensions.Logging;
 using System.Text.Json;
-using Microsoft.Extensions.Options;
-using System.Xml.Linq;
 using System.Runtime.CompilerServices;
-using System;
 
-[assembly: InternalsVisibleTo("ListDirectories.Tests")]
-namespace ListAll.Plugins.Directories;
+[assembly: InternalsVisibleTo("Plugin.ListDirectories.Tests")]
+namespace ListAll.Plugin.ListDirectories;
 
 public class ListDirectories : IPlugin
 {

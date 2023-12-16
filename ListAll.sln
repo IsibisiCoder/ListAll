@@ -7,7 +7,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ListAll", "ListAll\ListAll.
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ListAll.Business", "ListAll.Business\ListAll.Business.csproj", "{18E13C1F-C1DF-4550-997F-2521C2BFF862}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ListDirectories", "Plugins\ListDirectories\ClassLibrary1\ListDirectories.csproj", "{42748419-90B8-4045-95A0-C070551F0E96}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Plugin.ListDirectories", "Plugins\ListDirectories\ListDirectories.Plugin\Plugin.ListDirectories.csproj", "{42748419-90B8-4045-95A0-C070551F0E96}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Plugins", "Plugins", "{333DFAAF-F5AA-48A0-AE41-E7E8A33E382E}"
 EndProject
@@ -18,7 +18,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "SolutionFiles", "SolutionFi
 		Directory.Build.props = Directory.Build.props
 	EndProjectSection
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ListDirectories.Tests", "Plugins\ListDirectories.Tests\ListDirectories.Tests.csproj", "{D451F5A4-2AA3-43CF-B445-762B7DCE1E6D}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Plugin.ListDirectories.Tests", "Plugins\ListDirectories\ListDirectories.Tests\Plugin.ListDirectories.Tests.csproj", "{D451F5A4-2AA3-43CF-B445-762B7DCE1E6D}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ListAll.Business.Tests", "ListAll.Business.Tests\ListAll.Business.Tests.csproj", "{26C74348-CA13-4EE2-9FB2-2BFBD38A1A3F}"
 EndProject

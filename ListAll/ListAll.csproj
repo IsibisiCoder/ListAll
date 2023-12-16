@@ -35,7 +35,7 @@
   <ItemGroup>
     <ProjectReference Include="..\ListAll.Business\ListAll.Business.csproj" />
     <ProjectReference Include="..\Plugins\IPlugins\IPlugins.csproj" />
-    <ProjectReference Include="..\Plugins\ListDirectories\ClassLibrary1\ListDirectories.csproj" />
+    <ProjectReference Include="..\Plugins\ListDirectories\ListDirectories.Plugin\Plugin.ListDirectories.csproj" />
   </ItemGroup>
 
   <ItemGroup>

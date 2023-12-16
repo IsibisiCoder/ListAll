@@ -1,7 +1,4 @@
 ﻿using ListAll.Business.Model;
-using Microsoft.Extensions.Logging;
-using System.IO;
-using System.Runtime;
 using System.Text;
 using System.Text.Json;
 

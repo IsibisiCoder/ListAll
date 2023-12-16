@@ -1,8 +1,7 @@
 using ListAll.Business.Services;
 using Moq;
-using Newtonsoft.Json.Linq;
 
-namespace ListAll.Plugins.Directories.Tests;
+namespace ListAll.Plugin.ListDirectories.Tests;
 
 [TestClass]
 public class ListDirectoriesTest : ListDirectoriesBase
