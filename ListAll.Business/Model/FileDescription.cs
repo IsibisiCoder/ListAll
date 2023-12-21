@@ -16,4 +16,6 @@ public class FileDescription
     public DateTime CreationTime { get; set; }
 
     public List<string>? Directories { get; set; }
+
+    public string Md5Hash { get; set; } = string.Empty;
 }

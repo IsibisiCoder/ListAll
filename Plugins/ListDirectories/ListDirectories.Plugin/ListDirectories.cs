@@ -3,6 +3,8 @@ using ListAll.Business.Services;
 using ListAll.Business.Model;
 using System.Text.Json;
 using System.Runtime.CompilerServices;
+using Microsoft.Extensions.Logging;
+using Microsoft.Extensions.Localization;
 
 [assembly: InternalsVisibleTo("Plugin.ListDirectories.Tests")]
 namespace ListAll.Plugin.ListDirectories;
@@ -21,6 +23,8 @@ public class ListDirectories : IPlugin
 
     internal bool FolderRecursive { get; set; } = false;
 
+    internal bool Md5Hash { get; set; } = false;
+
     internal bool FilenameWithExtension { get; set; } = false;
 
     internal List<string> Extensions { get; set; } = new List<string>();
@@ -31,9 +35,11 @@ public class ListDirectories : IPlugin
 
     internal List<string> Headers { get; set; } = new List<string>();
 
-    private IFileService _fileService;
+    private readonly IFileService _fileService;
 
-    //private ILogger _logger;
+    private readonly ILogger _logger;
+
+    private readonly IStringLocalizer<ListDirectories> _localizer;
 
 
     //private static ListDirectories _listDirectories = null!;
@@ -44,13 +50,11 @@ public class ListDirectories : IPlugin
         //services.AddTransient<IPlugin, ListDirectories>();
     }*/
 
-    public ListDirectories(IFileService fileService)
+    public ListDirectories(IFileService fileService, ILogger<ListDirectories> logger, IStringLocalizer<ListDirectories> localizer)
     {
-        //, ILogger logger
-        ArgumentNullException.ThrowIfNull(fileService);
-
-        _fileService = fileService;
-        //_logger = logger;
+        _fileService = fileService ?? throw new ArgumentNullException($"{nameof(fileService)}");
+        _logger = logger ?? throw new ArgumentNullException($"{ nameof(logger) }");
+        _localizer = localizer ?? throw new ArgumentNullException(nameof(localizer));
     }
 
 
@@ -81,15 +85,6 @@ public class ListDirectories : IPlugin
         }
         else if (paramName == $"{nameof(Extensions)}")
         {
-            if (paramValue.Length >= 2)
-            {
-                if (paramValue.StartsWith(".")) paramValue = "*" + paramValue;
-                else if (!paramValue.Contains("."))
-                {
-                    paramValue = "*." + paramValue;
-                }
-            }
-            else if (paramValue.Length == 0) paramValue = "*.";
             Extensions.Add(paramValue);
         }
     }
@@ -107,19 +102,28 @@ public class ListDirectories : IPlugin
 
         try
         {
+            _logger.LogDebug($"{nameof(Process)}: GetFiles RootDir={nameof(RootDir)}");
+
             GetFiles(RootDir, allFiles);
 
-            //allFiles.Sort();
+            /*var result = allFiles.OrderBy(s => s.Md5Hash)
+                .ThenBy(s => s.Filename, StringComparer.CurrentCultureIgnoreCase)
+                .ThenBy(s => s.FileExtention)
+                .ToList();*/
+
+            var result = allFiles.OrderBy(s => s.Filename, StringComparer.CurrentCultureIgnoreCase)
+                .ToList();
 
             var outputFileExists = _fileService.FileExists(OutputFile);
 
             using (StreamWriter sr = _fileService.GetStreamWriter (OutputFile, true, Encoding.UTF8))
             {
-                WriteFileDescription(allFiles, sr, outputFileExists);
+                WriteFileDescription(result, sr, outputFileExists);
             }
         }
         catch (Exception ex)
         {
+            _logger.LogError(ex, _localizer["CriticalError"]);
             Console.WriteLine(ex.ToString());
         }
     }
@@ -159,6 +163,9 @@ public class ListDirectories : IPlugin
             fieldname = $"{nameof(desc.Path)}";
             col = col.Replace($"{fieldname}", desc.Path);
 
+            fieldname = $"{nameof(desc.Md5Hash)}";
+            col = col.Replace($"{fieldname}", desc.Md5Hash);
+
             if (desc.Directories != null)
             {
                 int i = 1;
@@ -191,13 +198,14 @@ public class ListDirectories : IPlugin
             {
                 if (!_fileService.DirectoryExists(directory))
                 {
-                    Console.WriteLine("Das Verzeichnis " + directory + " existiert nicht");
+                    string outputText = string.Format(_localizer["DirectoryNotExists"], directory);
+                    _logger.LogInformation(outputText);
                 }
                 else
                 {
                     if (!OnlyDir)
                     {
-                        var files = _fileService.GetFiles(directory, ext, FolderRecursive);
+                        var files = _fileService.GetFiles(directory, ext, FolderRecursive, Md5Hash);
                         allFiles.AddRange(files);
                     }
                 }
@@ -221,7 +229,7 @@ public class ListDirectories : IPlugin
         }
         catch (Exception ex)
         {
-            Console.Write(ex.ToString());
+            _logger.LogError(ex, _localizer["CriticalError"]);
         }
     }
 
@@ -235,6 +243,7 @@ public class ListDirectories : IPlugin
             FilenameWithExtension = element.GetProperty("filename-with-extension").GetBoolean();
             OutputFormat = element.GetProperty("output").GetString() ?? string.Empty;
             FolderRecursive = element.GetProperty("folder-recursive").GetBoolean();
+            Md5Hash = element.GetProperty("md5-hash").GetBoolean();
             var extensions = element.GetProperty("extensions").GetString()?.Split(' ')?.ToList();
             if (extensions != null)
             {

@@ -1,4 +1,6 @@
 using ListAll.Business.Services;
+using Microsoft.Extensions.Localization;
+using Microsoft.Extensions.Logging;
 using Moq;
 
 namespace ListAll.Plugin.ListDirectories.Tests;
@@ -6,6 +8,19 @@ namespace ListAll.Plugin.ListDirectories.Tests;
 [TestClass]
 public class ListDirectoriesTest : ListDirectoriesBase
 {
+    private ILogger<ListDirectories> _logger = null!;
+    private IStringLocalizer<ListDirectories> _localizer = null!;
+
+
+    [TestInitialize]
+    public void Inilialize()
+    {
+        // fake localizer & logger
+        _localizer = Mock.Of<IStringLocalizer<ListDirectories>>();
+        _logger = Mock.Of<ILogger<ListDirectories>>();
+    }
+
+
     [TestMethod]
     [ExpectedException (typeof (ArgumentNullException))]
     public void TestSetParameter_ParamIsNull_ArgumentNullException()
@@ -14,7 +29,7 @@ public class ListDirectoriesTest : ListDirectoriesBase
 
         var fileServiceMock = new Mock<IFileService>();
 
-        var listDirectories = new ListDirectories(fileServiceMock.Object);
+        var listDirectories = new ListDirectories(fileServiceMock.Object, _logger, _localizer);
 
         listDirectories.SetParameter(null!, value);
     }
@@ -27,7 +42,7 @@ public class ListDirectoriesTest : ListDirectoriesBase
 
         var fileServiceMock = new Mock<IFileService>();
 
-        var listDirectories = new ListDirectories(fileServiceMock.Object);
+        var listDirectories = new ListDirectories(fileServiceMock.Object, _logger, _localizer);
 
         listDirectories.SetParameter(string.Empty, value);
     }
@@ -40,7 +55,7 @@ public class ListDirectoriesTest : ListDirectoriesBase
 
         var fileServiceMock = new Mock<IFileService>();
 
-        var listDirectories = new ListDirectories(fileServiceMock.Object);
+        var listDirectories = new ListDirectories(fileServiceMock.Object, _logger, _localizer);
 
         listDirectories.SetParameter(param, null!);
     }
@@ -53,7 +68,7 @@ public class ListDirectoriesTest : ListDirectoriesBase
 
         var fileServiceMock = new Mock<IFileService>();
 
-        var listDirectories = new ListDirectories(fileServiceMock.Object);
+        var listDirectories = new ListDirectories(fileServiceMock.Object, _logger, _localizer);
 
         listDirectories.SetParameter(param, string.Empty);
     }
@@ -66,7 +81,7 @@ public class ListDirectoriesTest : ListDirectoriesBase
 
         var fileServiceMock = new Mock<IFileService>();
 
-        var listDirectories = new ListDirectories(fileServiceMock.Object);
+        var listDirectories = new ListDirectories(fileServiceMock.Object, _logger, _localizer);
 
         listDirectories.SetParameter(param, value);
 
@@ -81,7 +96,7 @@ public class ListDirectoriesTest : ListDirectoriesBase
 
         var fileServiceMock = new Mock<IFileService>();
 
-        var listDirectories = new ListDirectories(fileServiceMock.Object);
+        var listDirectories = new ListDirectories(fileServiceMock.Object, _logger, _localizer);
 
         listDirectories.SetParameter(param, value);
 
@@ -96,29 +111,11 @@ public class ListDirectoriesTest : ListDirectoriesBase
 
         var fileServiceMock = new Mock<IFileService>();
 
-        var listDirectories = new ListDirectories(fileServiceMock.Object);
+        var listDirectories = new ListDirectories(fileServiceMock.Object, _logger, _localizer);
 
         listDirectories.SetParameter(param, value.ToString());
 
         Assert.AreEqual(value, listDirectories.Recursive);
-    }
-
-    [TestMethod]
-    public void TestSetParameter_ExtensionsFile_WithoutAsterisk()
-    {
-        var param = "Extensions";
-        var value = "ext";
-        var expectedvalue = "*.ext";
-
-        var fileServiceMock = new Mock<IFileService>();
-
-        var listDirectories = new ListDirectories(fileServiceMock.Object);
-
-        listDirectories.SetParameter(param, value);
-
-        Assert.AreEqual(1, listDirectories.Extensions.Count);
-
-        Assert.AreEqual(expectedvalue, listDirectories.Extensions[0]);
     }
 
     [TestMethod]
@@ -130,44 +127,7 @@ public class ListDirectoriesTest : ListDirectoriesBase
 
         var fileServiceMock = new Mock<IFileService>();
 
-        var listDirectories = new ListDirectories(fileServiceMock.Object);
-
-        listDirectories.SetParameter(param, value);
-
-        Assert.AreEqual(1, listDirectories.Extensions.Count);
-
-        Assert.AreEqual(expectedvalue, listDirectories.Extensions[0]);
-    }
-
-    [TestMethod]
-    public void TestSetParameter_ExtensionsFile_WithTwoAsterisk()
-    {
-        var param = "Extensions";
-        var value = "**.ext";
-        var expectedvalue = "**.ext";
-
-        var fileServiceMock = new Mock<IFileService>();
-
-        var listDirectories = new ListDirectories(fileServiceMock.Object);
-
-        listDirectories.SetParameter(param, value);
-
-        Assert.AreEqual(1, listDirectories.Extensions.Count);
-
-        Assert.AreEqual(expectedvalue, listDirectories.Extensions[0]);
-    }
-
-
-    [TestMethod]
-    public void TestSetParameter_ExtensionsFile_OnlyDot()
-    {
-        var param = "Extensions";
-        var value = ".ext";
-        var expectedvalue = "*.ext";
-
-        var fileServiceMock = new Mock<IFileService>();
-
-        var listDirectories = new ListDirectories(fileServiceMock.Object);
+        var listDirectories = new ListDirectories(fileServiceMock.Object, _logger, _localizer);
 
         listDirectories.SetParameter(param, value);
 
@@ -180,16 +140,16 @@ public class ListDirectoriesTest : ListDirectoriesBase
     public void TestSetParameter_ExtensionsFile_ThreeExtensions()
     {
         var param = "Extensions";
-        var value1 = "ext";
-        var value2 = "txt";
-        var value3 = "pdf";
-        var expectedvalue1 = "*.ext";
-        var expectedvalue2 = "*.txt";
-        var expectedvalue3 = "*.pdf";
+        var value1 = "*ext";
+        var value2 = "*txt";
+        var value3 = "*pdf";
+        var expectedvalue1 = "*ext";
+        var expectedvalue2 = "*txt";
+        var expectedvalue3 = "*pdf";
 
         var fileServiceMock = new Mock<IFileService>();
 
-        var listDirectories = new ListDirectories(fileServiceMock.Object);
+        var listDirectories = new ListDirectories(fileServiceMock.Object, _logger, _localizer);
 
         listDirectories.SetParameter(param, value1);
         listDirectories.SetParameter(param, value2);
@@ -210,7 +170,7 @@ public class ListDirectoriesTest : ListDirectoriesBase
 
         var fileServiceMock = new Mock<IFileService>();
 
-        var listDirectories = new ListDirectories(fileServiceMock.Object);
+        var listDirectories = new ListDirectories(fileServiceMock.Object, _logger, _localizer   );
 
         listDirectories.SetParameter(param, value);
 
@@ -228,7 +188,7 @@ public class ListDirectoriesTest : ListDirectoriesBase
 
         var fileServiceMock = GetTestFileService();
 
-        var listDirectories = new ListDirectories(fileServiceMock);
+        var listDirectories = new ListDirectories(fileServiceMock, _logger, _localizer);
 
         listDirectories.GetConfiguration();
 
@@ -246,7 +206,7 @@ public class ListDirectoriesTest : ListDirectoriesBase
     {
         var fileServiceMock = GetTestFileService();
 
-        var listDirectories = new ListDirectories(fileServiceMock);
+        var listDirectories = new ListDirectories(fileServiceMock, _logger, _localizer);
 
         listDirectories.Process();
     }
@@ -257,7 +217,7 @@ public class ListDirectoriesTest : ListDirectoriesBase
     {
         var fileServiceMock = GetTestFileService();
 
-        var listDirectories = new ListDirectories(fileServiceMock);
+        var listDirectories = new ListDirectories(fileServiceMock, _logger, _localizer);
         listDirectories.SetParameter("OutputFile", "test1");
 
         listDirectories.Process();
@@ -268,7 +228,7 @@ public class ListDirectoriesTest : ListDirectoriesBase
     {
         var fileServiceMock = GetTestFileService();
 
-        var listDirectories = new ListDirectories(fileServiceMock);
+        var listDirectories = new ListDirectories(fileServiceMock, _logger, _localizer);
         listDirectories.SetParameter("OutputFile", "test1");
         listDirectories.SetParameter("RootDir", "c:\test");
 

@@ -14,7 +14,7 @@ public interface IFileService
 
     bool FileExists(string path);
 
-    List<FileDescription> GetFiles(string path, string extension, bool folderRecursive = false);
+    List<FileDescription> GetFiles(string path, string extension, bool folderRecursive = false, bool getMd5 = false);
 
     JsonDocument ReadSettings(string settingPath);
 

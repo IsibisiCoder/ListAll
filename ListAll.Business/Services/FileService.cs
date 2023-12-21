@@ -1,4 +1,7 @@
 ﻿using ListAll.Business.Model;
+using Microsoft.Extensions.Localization;
+using Microsoft.Extensions.Logging;
+using System.Security.Cryptography;
 using System.Text;
 using System.Text.Json;
 
@@ -6,12 +9,14 @@ namespace ListAll.Business.Services;
 
 public class FileService : IFileService
 {
-    //private ILogger _logger;
+    private readonly ILogger _logger;
+    private readonly IStringLocalizer<FileService> _localizer;
 
-    public FileService()
+
+    public FileService(ILogger<FileService> logger, IStringLocalizer<FileService> localizer)
     {
-        //ILogger logger
-        //_logger = logger;
+        _logger = logger ?? throw new ArgumentNullException(nameof(logger));
+        _localizer = localizer ?? throw new ArgumentNullException(nameof(localizer));
     }
 
     /// <summary>
@@ -25,6 +30,8 @@ public class FileService : IFileService
         var dirName = Path.GetDirectoryName(path);
         if (string.IsNullOrEmpty(dirName))
         {
+            string outputText = string.Format(_localizer["DirectoryNotExists"], dirName);
+            _logger.LogDebug(outputText);
             return false;
         }
 
@@ -33,12 +40,17 @@ public class FileService : IFileService
         {
             try
             {
+                string outputText = string.Format(_localizer["DirectoryShouldBeCreated"], dirName);
+                _logger.LogDebug(outputText);
+
                 Directory.CreateDirectory(dirName);
                 directoryExists = true;
             }
             catch (Exception ex)
             {
-                //_logger.LogWarning(ex, "directory can not create");
+                string outputText = string.Format(_localizer["DirectoryCanNotCreated"], dirName);
+                _logger.LogDebug(outputText);
+
                 directoryExists = false;
             }
         }
@@ -65,6 +77,8 @@ public class FileService : IFileService
     {
         if (string.IsNullOrWhiteSpace(path)) throw new ArgumentNullException(nameof(path));
 
+        _logger.LogDebug($"Entry {nameof(GetFileDescriptionOfDirectories)}");
+
         var files = new List<FileDescription>();
 
         string[] directories = GetDirectories(path);
@@ -81,6 +95,10 @@ public class FileService : IFileService
                 CreationTime = dirInfo.CreationTime,
                 FileSize = 0L
             };
+
+            string outputText = string.Format(_localizer["AddDirectoryMessage"], fd.Filename);
+            _logger.LogInformation(outputText);
+
             files.Add(fd);
         }
         return files;
@@ -107,12 +125,15 @@ public class FileService : IFileService
     /// <param name="path"></param>
     /// <param name="extension"></param>
     /// <param name="folderRecursive">The directories are recursive save into the list object</param>
+    /// <param name="getMd5">Get MD5-Hash from the file</param>
     /// <returns></returns>
     /// <exception cref="ArgumentNullException"></exception>
-    public List<FileDescription> GetFiles(string path, string extension, bool folderRecursive = false)
+    public List<FileDescription> GetFiles(string path, string extension, bool folderRecursive = false, bool getMd5 = false)
     {
         if (string.IsNullOrWhiteSpace(path)) throw new ArgumentNullException(nameof(path));
         if (string.IsNullOrWhiteSpace(extension)) throw new ArgumentNullException(nameof(extension));
+
+        _logger.LogDebug($"Entry {nameof(GetFiles)}");
 
         var files = new List<FileDescription>();
 
@@ -146,11 +167,30 @@ public class FileService : IFileService
                 Path = info.DirectoryName ?? string.Empty,
                 CreationTime = info.CreationTime,
                 FileSize = info.Length,
-                Directories = allDirectories
+                Directories = allDirectories,
+                Md5Hash = getMd5 ? GetMD5Hash(info.FullName) : string.Empty
             };
+
+            string outputText = string.Format(_localizer["AddFileMessage"], fd.Filename);
+            _logger.LogInformation(outputText);
+
             files.Add(fd);
         }
         return files;
+    }
+
+    private string GetMD5Hash(string filePath)
+    {
+        using (var md5 = MD5.Create())
+        {
+            using (var stream = new FileStream(filePath, FileMode.Open, FileAccess.Read))
+            {
+                var hash = md5.ComputeHash(stream);
+                var convertedHash = BitConverter.ToString(hash).Replace("-", String.Empty).ToLowerInvariant();
+                _logger.LogDebug($"md5 for File {filePath}: {convertedHash}");
+                return convertedHash;
+            }
+        }
     }
 
     public JsonDocument ReadSettings(string settingPath)
@@ -171,8 +211,5 @@ public class FileService : IFileService
     public StreamWriter GetStreamWriter(string path, bool append, Encoding encoding)
     {
         return new StreamWriter(path, append, encoding);
-        //only for test
-        //ms = new MemoryStream();
-        //return new StreamWriter(ms);
     }
 }

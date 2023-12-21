@@ -2,12 +2,12 @@
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
+using Microsoft.Extensions.Localization;
 using CommandLine;
 using ListAll.Business.Services;
 
 //TODO:
 // Sort
-// Language / Resource
 // weitere Unittests (Auslagerung aus Process / internal)
 // -n onlyDir => Größe des Unterverzeichnisses
 // param => fehler prüfen, Param prüfen
@@ -23,19 +23,19 @@ internal class Program
 {
     public class Options
     {
-        [Option('o', "outputfile", Required = true, HelpText = "Set outputfilename")]
+        [Option('o', "outputfile", Required = true, HelpText = "Outputfilename", ResourceType = typeof(Resources.ProgramParameter))]
         public required string Outputfilename { get; set; }
 
-        [Option('s', "setting", Required = false, Default = false, HelpText = "Path of seperate config file with settings")]
+        [Option('s', "setting", Required = false, Default = false, HelpText = "Setting", ResourceType = typeof(Resources.ProgramParameter))]
         public string? Setting { get; set; }
 
-        [Option('d', "rootdir", Required = true, HelpText = "start directory")]
+        [Option('d', "rootdir", Required = true, HelpText = "Rootdir", ResourceType = typeof(Resources.ProgramParameter))]
         public required string RootDir { get; set; }
 
-        [Option('e', "extensions", Required = false, HelpText = "Use only this extensions")]
+        [Option('e', "extensions", Required = false, HelpText = "Extensions", ResourceType = typeof(Resources.ProgramParameter))]
         public IEnumerable<string>? Extensions { get; set; }
 
-        [Option('r', "recursive", Required = false, Default = false, HelpText = "Use recursive directories")]
+        [Option('r', "recursive", Required = false, Default = false, HelpText = "Recursive", ResourceType = typeof(Resources.ProgramParameter))]
         public bool Recursive { get; set; } = false;
     }
 
@@ -58,41 +58,32 @@ internal class Program
         //--outputfile="c:\temp-ulf\o.csv" --rootdir="c:\temp" --extensions="txt,mp4"
 
         ParserResult<Options> parserResult = Parser.Default.ParseArguments<Options>(args)
-                .WithParsed(RunOptions)
-                .WithNotParsed(HandleParseError);
+        .WithParsed(RunOptions)
+        .WithNotParsed(HandleParseError);
 
-        var builder = Host.CreateDefaultBuilder(args)
-            .ConfigureServices((hostContext, services) =>
-            {
-                //services.AddHostedService<ListAllService>();
-                services.AddSingleton<ListAll.Plugin.ListDirectories.ListDirectories>();
-                services.AddTransient<IFileService, FileService>();
-                services.AddLogging();
-                //services.AddLocalization(options => options.ResourcesPath = "Resources");
-                //services.AddDbContext<WebApiMockDbContext>(options => { options.UseSqlite(Configuration.GetConnectionString("SqliteConnection")); });
-                //ListDirectories.SetBuilder(services);
-            })
-            .ConfigureAppConfiguration((_, configuration) =>
-            {
-                configuration.Sources.Clear();
+        var builder = Host.CreateApplicationBuilder(args);
 
-                configuration
-                    .AddJsonFile("appsettings.json", optional: true, reloadOnChange: true)
-                    .AddEnvironmentVariables();
-            })
-            .ConfigureLogging((hostContext, logging) =>
-            {
-                logging.ClearProviders();
-                logging.SetMinimumLevel(LogLevel.Debug);
-                logging.AddConfiguration(hostContext.Configuration.GetSection("Logging"));
-                logging.AddConsole();
-                logging.AddDebug();
-            });
+        builder.Services.AddSingleton<ListAll.Plugin.ListDirectories.ListDirectories>();
+        builder.Services.AddTransient<IFileService, FileService>();
+
+        builder.Services.AddLogging();
+        builder.Services.AddLocalization(options => options.ResourcesPath = "Resources");
+
+        builder.Logging.ClearProviders();
+        builder.Logging.SetMinimumLevel(LogLevel.Debug);
+        builder.Logging.AddConsole();
+        builder.Logging.AddDebug();
+        builder.Logging.AddConfiguration(builder.Configuration.GetSection("Logging"));
+
+        builder.Configuration.Sources.Clear();
+        builder.Configuration.AddJsonFile("appsettings.json", optional: true, reloadOnChange: true);
+        builder.Configuration.AddEnvironmentVariables();
 
         var app = builder.Build();
 
         IConfiguration? config = app?.Services.GetRequiredService<IConfiguration>();
         ILogger<Program>? logger = app?.Services.GetService<ILogger<Program>>();
+        IStringLocalizer<Program>? localizer = app?.Services.GetService<IStringLocalizer<Program>>();
         ILoggerFactory? loggerFactory = app?.Services.GetService<ILoggerFactory>();
 
         var log4NetFilename = config?["ListAll:Log4NetConfigFilename"];
@@ -100,26 +91,17 @@ internal class Program
         if (!string.IsNullOrEmpty(log4NetFilename))
         {
             loggerFactory.AddLog4Net(log4NetFilename);
-            logger?.LogDebug($"use log4Net-Filename: {log4NetFilename}");
+            logger?.LogDebug($"{ localizer!["UseLog4netFilename"] } {log4NetFilename}");
         }
         else
         {
             loggerFactory.AddLog4Net();
         }
 
-        //string outputfilename = GetArgument(args, "--outputfile") ?? System.IO.Path.Combine(System.Environment.CurrentDirectory, "output.csv");
-        //string outputtype = GetArgument(args, "--outputtype") ?? "csv";
-        //string extensionParam = GetArgument(args, "--extensions") ?? "*";
-        //List<string> extensions = extensionParam.Split(',').ToList();
-        //string rootDir = GetArgument(args, "--rootdir");
-
         using (var scope = app?.Services.CreateScope())
         {
             var services = scope?.ServiceProvider;
             var context = services?.GetRequiredService<ListAll.Plugin.ListDirectories.ListDirectories>();
-            //context?.SetParameter("OutputFile", outputfilename);
-            //context?.SetParameter("Outputtype", outputtype);
-            //context?.SetParameter("RootDir", rootDir);
             context?.SetParameter("OutputFile", parserResult.Value.Outputfilename);
             context?.SetParameter("RootDir", parserResult.Value.RootDir);
             context?.SetParameter("SettingPath", parserResult.Value.Setting ?? string.Empty);
