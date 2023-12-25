@@ -45,6 +45,7 @@
     <ProjectReference Include="..\ListAll.Business\ListAll.Business.csproj" />
     <ProjectReference Include="..\Plugins\IPlugins\IPlugins.csproj" />
     <ProjectReference Include="..\Plugins\ListDirectories\ListDirectories.Plugin\Plugin.ListDirectories.csproj" />
+    <ProjectReference Include="..\Plugins\MediaInfo\MediaInfo.Plugin\Plugin.MediaInfo.csproj" />
   </ItemGroup>
 
   <ItemGroup>

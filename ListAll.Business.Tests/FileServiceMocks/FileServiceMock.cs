@@ -52,7 +52,8 @@ public class FileServiceMock : IFileService
         };
     }
 
-    public List<FileDescription> GetFiles(string path, string extension, bool folderRecursive = false, bool getMd5 = false)
+    //public List<FileDescription> GetFiles(string path, string extension, bool folderRecursive = false, bool getMd5 = false, Func<string, Dictionary<string, string>>? getPropertiesFunc = null /*IMediaPlugin? mediaPlugin = null*/)
+    public List<FileDescription> GetFiles(string path, string extension, bool folderRecursive = false, bool getMd5 = false, IMediaPlugin? mediaPlugin = null)
     {
         return new List<FileDescription>
         {
@@ -84,7 +85,7 @@ public class FileServiceMock : IFileService
 
     public JsonDocument ReadSettings(string settingPath)
     {
-        var jsonSetting = "{\r\n  \"onlydir\": true,\r\n  \"filename-with-extension\": true,\r\n  \"folder-recursive\": true,\r\n  \"md5-hash\": false,\r\n  \"extensions\": \"txt\",\r\n  \"output\": \"Filename;FileExtention\",\r\n  \"headers\": [\r\n    {\r\n      \"header\": \"Filename;Ext;Size;Date;Path\"\r\n    },\r\n    {\r\n      \"header\": \"--|--|--|--|--\"\r\n    }\r\n  ]\r\n}";
+        var jsonSetting = "{\r\n  \"onlydir\": true,\r\n  \"filename-with-extension\": true,\r\n  \"folder-reverse\": false,\r\n  \"md5-hash\": false,\r\n  \"extensions\": \"txt\",\r\n  \"output\": \"Filename;FileExtention\",\r\n  \"headers\": [\r\n    {\r\n      \"header\": \"Filename;Ext;Size;Date;Path\"\r\n    },\r\n    {\r\n      \"header\": \"--|--|--|--|--\"\r\n    }\r\n  ],\r\n  \"mediaplugin\": \"mediainfo\"\r\n}";
         var jsonDocument = JsonDocument.Parse(jsonSetting);
         return jsonDocument;
     }

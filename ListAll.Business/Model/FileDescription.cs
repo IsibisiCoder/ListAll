@@ -18,4 +18,6 @@ public class FileDescription
     public List<string>? Directories { get; set; }
 
     public string Md5Hash { get; set; } = string.Empty;
+
+    public Dictionary<string, string> Properties { get; set; } = new Dictionary<string, string>();
 }

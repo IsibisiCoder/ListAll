@@ -12,6 +12,10 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\Plugins\IPlugins\IPlugins.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
     <Compile Update="Resources\Services.FileService.Designer.cs">
       <DependentUpon>Services.FileService.resx</DependentUpon>
       <DesignTime>True</DesignTime>

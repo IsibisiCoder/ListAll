@@ -5,6 +5,8 @@ using System.Text.Json;
 using System.Runtime.CompilerServices;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Localization;
+using System;
+using Microsoft.Extensions.DependencyInjection;
 
 [assembly: InternalsVisibleTo("Plugin.ListDirectories.Tests")]
 namespace ListAll.Plugin.ListDirectories;
@@ -21,9 +23,11 @@ public class ListDirectories : IPlugin
 
     internal bool OnlyDir { get; set; } = false;
 
-    internal bool FolderRecursive { get; set; } = false;
+    internal bool FolderReverse { get; set; } = false;
 
     internal bool Md5Hash { get; set; } = false;
+
+    internal string MediaPlugin { get; set; } = string.Empty;
 
     internal bool FilenameWithExtension { get; set; } = false;
 
@@ -41,6 +45,8 @@ public class ListDirectories : IPlugin
 
     private readonly IStringLocalizer<ListDirectories> _localizer;
 
+    private readonly IServiceProvider? _serviceProvider;
+
 
     //private static ListDirectories _listDirectories = null!;
 
@@ -50,13 +56,13 @@ public class ListDirectories : IPlugin
         //services.AddTransient<IPlugin, ListDirectories>();
     }*/
 
-    public ListDirectories(IFileService fileService, ILogger<ListDirectories> logger, IStringLocalizer<ListDirectories> localizer)
+    public ListDirectories(IFileService fileService, ILogger<ListDirectories> logger, IStringLocalizer<ListDirectories> localizer, IServiceProvider? serviceProvider)
     {
         _fileService = fileService ?? throw new ArgumentNullException($"{nameof(fileService)}");
         _logger = logger ?? throw new ArgumentNullException($"{ nameof(logger) }");
         _localizer = localizer ?? throw new ArgumentNullException(nameof(localizer));
+        _serviceProvider = serviceProvider;
     }
-
 
     /// <summary>
     /// <Set one parameter
@@ -104,7 +110,22 @@ public class ListDirectories : IPlugin
         {
             _logger.LogDebug($"{nameof(Process)}: GetFiles RootDir={nameof(RootDir)}");
 
-            GetFiles(RootDir, allFiles);
+            IMediaPlugin? mediaPlugin = null;
+            if (_serviceProvider != null)
+            {
+                mediaPlugin = _serviceProvider.GetKeyedService<IMediaPlugin>("mediainfo");
+            }
+
+
+            /*Func<string, Dictionary<string, string>>? func = null;
+
+            if (mediaPlugin != null)
+            {
+                func = mediaPlugin.GetProperties;
+            }
+
+            GetFiles(RootDir, allFiles, func);*/
+            GetFiles(RootDir, allFiles, mediaPlugin);
 
             /*var result = allFiles.OrderBy(s => s.Md5Hash)
                 .ThenBy(s => s.Filename, StringComparer.CurrentCultureIgnoreCase)
@@ -186,32 +207,41 @@ public class ListDirectories : IPlugin
                 }
             }
 
+            if (desc.Properties != null && desc.Properties.Count > 0)
+            {
+                foreach (var prop in desc.Properties)
+                {
+                    fieldname = prop.Key;
+                    col = col.Replace($"{fieldname}", prop.Value);
+                }
+            }
+
             sr.WriteLine(col);
         }
     }
 
-    private void GetFiles(string directory, List<FileDescription> allFiles)
+    //private void GetFiles(string directory, List<FileDescription> allFiles, Func<string, Dictionary<string, string>>? getPropertiesFunc/*, IMediaPlugin? mediaPlugin*/)
+    private void GetFiles(string directory, List<FileDescription> allFiles, IMediaPlugin? mediaPlugin)
     {
+        if (!_fileService.DirectoryExists(directory))
+        {
+            string outputText = string.Format(_localizer["DirectoryNotExists"], directory);
+            _logger.LogInformation(outputText);
+            return;
+        }
+
         try
         {
-            foreach (string ext in Extensions)
+            if (!OnlyDir)
             {
-                if (!_fileService.DirectoryExists(directory))
+                foreach (string ext in Extensions)
                 {
-                    string outputText = string.Format(_localizer["DirectoryNotExists"], directory);
-                    _logger.LogInformation(outputText);
-                }
-                else
-                {
-                    if (!OnlyDir)
-                    {
-                        var files = _fileService.GetFiles(directory, ext, FolderRecursive, Md5Hash);
-                        allFiles.AddRange(files);
-                    }
+                    //var files = _fileService.GetFiles(directory, ext, FolderReverse, Md5Hash, getPropertiesFunc /*mediaPlugin*/);
+                    var files = _fileService.GetFiles(directory, ext, FolderReverse, Md5Hash, mediaPlugin);
+                    allFiles.AddRange(files);
                 }
             }
-
-            if (OnlyDir)
+            else
             {
                 var files = _fileService.GetFileDescriptionOfDirectories(directory);
                 allFiles.AddRange(files);
@@ -223,7 +253,8 @@ public class ListDirectories : IPlugin
 
                 foreach (string nextdirectory in directories)
                 {
-                    GetFiles(nextdirectory, allFiles);
+                    //GetFiles(nextdirectory, allFiles, getPropertiesFunc);
+                    GetFiles(nextdirectory, allFiles, mediaPlugin);
                 }
             }
         }
@@ -242,8 +273,9 @@ public class ListDirectories : IPlugin
             OnlyDir = element.GetProperty("onlydir").GetBoolean();
             FilenameWithExtension = element.GetProperty("filename-with-extension").GetBoolean();
             OutputFormat = element.GetProperty("output").GetString() ?? string.Empty;
-            FolderRecursive = element.GetProperty("folder-recursive").GetBoolean();
+            FolderReverse = element.GetProperty("folder-reverse").GetBoolean();
             Md5Hash = element.GetProperty("md5-hash").GetBoolean();
+            MediaPlugin = element.GetProperty("mediaplugin").GetString() ?? string.Empty;
             var extensions = element.GetProperty("extensions").GetString()?.Split(' ')?.ToList();
             if (extensions != null)
             {

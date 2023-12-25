@@ -7,7 +7,6 @@ using CommandLine;
 using ListAll.Business.Services;
 
 //TODO:
-// Sort
 // weitere Unittests (Auslagerung aus Process / internal)
 // -n onlyDir => Größe des Unterverzeichnisses
 // param => fehler prüfen, Param prüfen
@@ -16,6 +15,7 @@ using ListAll.Business.Services;
 // freier Speicherplatz auf SystemDrive prüfen
 // SetParameter zusätzlich als Long, Bool, IEnumable<string> ins Interface
 // Modul auswählen, ggf. Video und Audio als eigenes Modul/Bibliothek
+// Sort Check Konfigurierbar
 
 namespace ListAll;
 
@@ -64,6 +64,8 @@ internal class Program
         var builder = Host.CreateApplicationBuilder(args);
 
         builder.Services.AddSingleton<ListAll.Plugin.ListDirectories.ListDirectories>();
+        //builder.Services.AddSingleton<IMediaPlugin, ListAll.Plugin.MediaInfo.MediaInfo>();
+        builder.Services.AddKeyedSingleton<IMediaPlugin, ListAll.Plugin.MediaInfo.MediaInfo>("mediainfo");
         builder.Services.AddTransient<IFileService, FileService>();
 
         builder.Services.AddLogging();

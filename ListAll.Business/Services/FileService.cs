@@ -12,7 +12,6 @@ public class FileService : IFileService
     private readonly ILogger _logger;
     private readonly IStringLocalizer<FileService> _localizer;
 
-
     public FileService(ILogger<FileService> logger, IStringLocalizer<FileService> localizer)
     {
         _logger = logger ?? throw new ArgumentNullException(nameof(logger));
@@ -49,7 +48,7 @@ public class FileService : IFileService
             catch (Exception ex)
             {
                 string outputText = string.Format(_localizer["DirectoryCanNotCreated"], dirName);
-                _logger.LogDebug(outputText);
+                _logger.LogError(ex, outputText);
 
                 directoryExists = false;
             }
@@ -124,11 +123,12 @@ public class FileService : IFileService
     /// </summary>
     /// <param name="path"></param>
     /// <param name="extension"></param>
-    /// <param name="folderRecursive">The directories are recursive save into the list object</param>
+    /// <param name="folderReverse">The directories are reverse save into the list object</param>
     /// <param name="getMd5">Get MD5-Hash from the file</param>
     /// <returns></returns>
     /// <exception cref="ArgumentNullException"></exception>
-    public List<FileDescription> GetFiles(string path, string extension, bool folderRecursive = false, bool getMd5 = false)
+    //public List<FileDescription> GetFiles(string path, string extension, bool folderReverse = false, bool getMd5 = false, Func<string, Dictionary<string, string>>? getPropertiesFunc = null /*IMediaPlugin? mediaPlugin = null*/)
+    public List<FileDescription> GetFiles(string path, string extension, bool folderReverse = false, bool getMd5 = false, IMediaPlugin? mediaPlugin = null)
     {
         if (string.IsNullOrWhiteSpace(path)) throw new ArgumentNullException(nameof(path));
         if (string.IsNullOrWhiteSpace(extension)) throw new ArgumentNullException(nameof(extension));
@@ -151,7 +151,7 @@ public class FileService : IFileService
 
             List<string>? allDirectories;
 
-            if (folderRecursive)
+            if (folderReverse)
             {
                 allDirectories = info.DirectoryName?.Split(Path.DirectorySeparatorChar, StringSplitOptions.RemoveEmptyEntries).Reverse().ToList();
             }
@@ -170,6 +170,21 @@ public class FileService : IFileService
                 Directories = allDirectories,
                 Md5Hash = getMd5 ? GetMD5Hash(info.FullName) : string.Empty
             };
+
+            //if (getPropertiesFunc != null)
+            if (mediaPlugin != null)
+            {
+                //var properties = getPropertiesFunc(info.FullName);
+                var properties = mediaPlugin.GetProperties(info.FullName);
+                if (properties != null && properties.Count > 0)
+                {
+                    foreach (var prop in properties)
+                    {
+                        fd.Properties.Add(prop.Key, prop.Value);
+                    }
+                }
+            }
+
 
             string outputText = string.Format(_localizer["AddFileMessage"], fd.Filename);
             _logger.LogInformation(outputText);

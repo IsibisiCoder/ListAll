@@ -12,6 +12,7 @@
   <ItemGroup>
     <ProjectReference Include="..\..\..\ListAll.Business\ListAll.Business.csproj" />
     <ProjectReference Include="..\..\IPlugins\IPlugins.csproj" />
+    <ProjectReference Include="..\..\MediaInfo\MediaInfo.Plugin\Plugin.MediaInfo.csproj" />
   </ItemGroup>
 
 
