@@ -16,6 +16,7 @@ EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "SolutionFiles", "SolutionFiles", "{01D07802-A4DA-4330-AB72-B341CB6DB1FE}"
 	ProjectSection(SolutionItems) = preProject
 		Directory.Build.props = Directory.Build.props
+		README.md = README.md
 	EndProjectSection
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Plugin.ListDirectories.Tests", "Plugins\ListDirectories\ListDirectories.Tests\Plugin.ListDirectories.Tests.csproj", "{D451F5A4-2AA3-43CF-B445-762B7DCE1E6D}"

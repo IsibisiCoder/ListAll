@@ -1,6 +1,7 @@
 ﻿using ListAll.Business.Model;
 using Microsoft.Extensions.Localization;
 using Microsoft.Extensions.Logging;
+using System.IO;
 using System.Security.Cryptography;
 using System.Text;
 using System.Text.Json;
@@ -34,7 +35,8 @@ public class FileService : IFileService
             return false;
         }
 
-        bool directoryExists = Directory.Exists(dirName);
+        DirectoryInfo dirInfo = new DirectoryInfo(path);
+        bool directoryExists = dirInfo.Exists;
         if (!directoryExists && createIfNotExists)
         {
             try
@@ -128,21 +130,29 @@ public class FileService : IFileService
     /// <returns></returns>
     /// <exception cref="ArgumentNullException"></exception>
     //public List<FileDescription> GetFiles(string path, string extension, bool folderReverse = false, bool getMd5 = false, Func<string, Dictionary<string, string>>? getPropertiesFunc = null /*IMediaPlugin? mediaPlugin = null*/)
-    public List<FileDescription> GetFiles(string path, string extension, bool folderReverse = false, bool getMd5 = false, IMediaPlugin? mediaPlugin = null)
+    public List<FileDescription> GetFiles(string path, List<string> allowedExtensions, bool folderReverse = false, bool getMd5 = false, IMediaPlugin? mediaPlugin = null)
     {
         if (string.IsNullOrWhiteSpace(path)) throw new ArgumentNullException(nameof(path));
-        if (string.IsNullOrWhiteSpace(extension)) throw new ArgumentNullException(nameof(extension));
-
-        _logger.LogDebug($"Entry {nameof(GetFiles)}");
+        if (!allowedExtensions.Any()) throw new ArgumentNullException(nameof(allowedExtensions));
 
         var files = new List<FileDescription>();
 
-        DirectoryInfo dirInfo = new DirectoryInfo(path);
-
-        FileInfo[] fileInfo = dirInfo.GetFiles(extension);
-
-        foreach (FileInfo info in fileInfo)
+        if (!DirectoryExists(path))
         {
+            return files;
+        }
+
+        var filesInDirectory = Directory
+            .GetFiles(path)
+            .Where(file => allowedExtensions.Any(file.ToLower().EndsWith))
+            .ToList();
+
+        _logger.LogInformation($"  {nameof(GetFiles)} Dir: { path }: Count: { filesInDirectory.Count }");
+
+        foreach (string filename in filesInDirectory)
+        {
+            FileInfo info = new FileInfo(filename);
+
             var ext = info.Extension;
             if (ext.StartsWith("."))
             {
@@ -185,9 +195,8 @@ public class FileService : IFileService
                 }
             }
 
-
-            string outputText = string.Format(_localizer["AddFileMessage"], fd.Filename);
-            _logger.LogInformation(outputText);
+            string outputText = string.Format(_localizer["AddFileMessage"], info.Name);
+            _logger.LogDebug(outputText);
 
             files.Add(fd);
         }

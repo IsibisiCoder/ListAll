@@ -7,14 +7,9 @@ using CommandLine;
 using ListAll.Business.Services;
 
 //TODO:
-// weitere Unittests (Auslagerung aus Process / internal)
 // -n onlyDir => Größe des Unterverzeichnisses
-// param => fehler prüfen, Param prüfen
-// option Video
-// option Audio
+// weitere Unittests (Auslagerung aus Process / internal)
 // freier Speicherplatz auf SystemDrive prüfen
-// SetParameter zusätzlich als Long, Bool, IEnumable<string> ins Interface
-// Modul auswählen, ggf. Video und Audio als eigenes Modul/Bibliothek
 // Sort Check Konfigurierbar
 
 namespace ListAll;
@@ -23,13 +18,13 @@ internal class Program
 {
     public class Options
     {
-        [Option('o', "outputfile", Required = true, HelpText = "Outputfilename", ResourceType = typeof(Resources.ProgramParameter))]
+        [Option('o', "outputfile", Required = false, HelpText = "Outputfilename", ResourceType = typeof(Resources.ProgramParameter))]
         public required string Outputfilename { get; set; }
 
         [Option('s', "setting", Required = false, Default = false, HelpText = "Setting", ResourceType = typeof(Resources.ProgramParameter))]
         public string? Setting { get; set; }
 
-        [Option('d', "rootdir", Required = true, HelpText = "Rootdir", ResourceType = typeof(Resources.ProgramParameter))]
+        [Option('d', "rootdir", Required = false, HelpText = "Rootdir", ResourceType = typeof(Resources.ProgramParameter))]
         public required string RootDir { get; set; }
 
         [Option('e', "extensions", Required = false, HelpText = "Extensions", ResourceType = typeof(Resources.ProgramParameter))]
@@ -39,11 +34,6 @@ internal class Program
         public bool Recursive { get; set; } = false;
     }
 
-    static void RunOptions(Options opts)
-    {
-        var e = opts.Outputfilename;
-        //handle options
-    }
     static void HandleParseError(IEnumerable<Error> errs)
     {
         var result = -2;
@@ -53,18 +43,28 @@ internal class Program
         Console.WriteLine("Exit code {0}", result);
     }
 
-    static void Main(string[] args)
+    static int Main(string[] args)
     {
-        //--outputfile="c:\temp-ulf\o.csv" --rootdir="c:\temp" --extensions="txt,mp4"
-
         ParserResult<Options> parserResult = Parser.Default.ParseArguments<Options>(args)
-        .WithParsed(RunOptions)
         .WithNotParsed(HandleParseError);
+
+        if (parserResult.Errors.Any())
+        {
+            return 1;
+        }
+
+        if (string.IsNullOrEmpty(parserResult.Value.Setting) 
+            && (string.IsNullOrEmpty(parserResult.Value.Outputfilename) 
+             || string.IsNullOrEmpty(parserResult.Value.RootDir)))
+        {
+            //TODO:Translation
+            Console.WriteLine("You have to set Setting or Outputfilename and rootDir!");
+            return 2;
+        }
 
         var builder = Host.CreateApplicationBuilder(args);
 
         builder.Services.AddSingleton<ListAll.Plugin.ListDirectories.ListDirectories>();
-        //builder.Services.AddSingleton<IMediaPlugin, ListAll.Plugin.MediaInfo.MediaInfo>();
         builder.Services.AddKeyedSingleton<IMediaPlugin, ListAll.Plugin.MediaInfo.MediaInfo>("mediainfo");
         builder.Services.AddTransient<IFileService, FileService>();
 
@@ -117,6 +117,8 @@ internal class Program
             }
             context?.Process();
         };
+
+        return 0;
     }
 
     static string GetArgument(string[] args, string searchedParameter)

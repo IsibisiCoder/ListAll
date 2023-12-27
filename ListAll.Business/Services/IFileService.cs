@@ -15,7 +15,7 @@ public interface IFileService
     bool FileExists(string path);
 
     //List<FileDescription> GetFiles(string path, string extension, bool folderRecursive = false, bool getMd5 = false, Func<string, Dictionary<string, string>>? getPropertiesFunc = null  /*IMediaPlugin? mediaPlugin = null*/);
-    List<FileDescription> GetFiles(string path, string extension, bool folderRecursive = false, bool getMd5 = false, IMediaPlugin? mediaPlugin = null);
+    List<FileDescription> GetFiles(string path, List<string> allowedExtensions, bool folderRecursive = false, bool getMd5 = false, IMediaPlugin? mediaPlugin = null);
 
     JsonDocument ReadSettings(string settingPath);
 

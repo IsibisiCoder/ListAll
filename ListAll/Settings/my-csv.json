@@ -1,0 +1,17 @@
+{
+  "outputfile": "c:\\temp\\listall\\xxx.csv",
+  "onlydir": false,
+  "filename-with-extension": false,
+  "extensions": ".mp4 .mkv .avi .flv .wmv .mov .mpg .mpeg .asf .webm",
+  "folder-reverse": true,
+  "md5-hash": false,
+  "recursive": true,
+  "recursive-depth": -1,
+  "output": "%Filename%;%FileExtention%;%FileSize%;%CreationTime%;%duration%;%inhours%:%inminutes%:%inseconds%;%width%;%height%;%framerate%;%aspectRatio%;%format%;%audioCodec%;%audioSampleRate%;%audioChannelsFriendly%;%videoCodec%;%videoRate%;%videoResolution%;%folder1%;%folder2%;%folder3%;%Path%",
+  "headers": [
+    {
+      "header": "Filename;Ext;Size;Date;TotalDuration;Duration;Width;Height;Framerate;AspectRatio;Format;AudioCodec;AudioSampleRate;AudioChannelsFriendly;VideoCodec;VideoRate;VideoResolution;Folder1;Folder2;Folder3;Path"
+    }
+  ],
+  "mediaplugin": "mediainfo"
+}

@@ -1,13 +1,13 @@
 {
   "onlydir": false,
   "filename-with-extension": false,
-  "extensions": "*.mp4 *.mkv *.avi *.flv *.wmv *.mov *.mpg *.mpeg *.asf *.webm",
+  "extensions": ".mp4 .mkv .avi .flv .wmv .mov .mpg .mpeg .asf .webm",
   "folder-reverse": false,
   "md5-hash": true,
-  "output": "Filename;FileExtention;FileSize;CreationTime;duration;inhours:inminutes:inseconds;width;height;framerate;aspectRatio;codec;format;audioCodec;audioSampleRate;audioChannelsFriendly;videoCodec;videoRate;videoResolution;folder1;folder2;folder3;Md5Hash;Path",
+  "output": "%Filename%;%FileExtention%;%FileSize%;%CreationTime%;%duration%;%inhours%:%inminutes%:%inseconds%;%width%;%height%;%framerate%;%aspectRatio%;%codec%;%format%;%audioCodec%;%audioSampleRate%;%audioChannelsFriendly%;%videoCodec%;%videoRate%;%videoResolution%;%folder1%;%folder2%;%folder3%;%Md5Hash%;%Path%",
   "headers": [
     {
-      "header": "Filename;Ext;Size;Date;Duration in Seconds;Duration;Width;Height;Framerate;AspectRatio;Codec;Format;AudioCodec;AudioSampleRate;AudioChannelsFriendly;VideoCodec;VideoRate;VideoResolution;Folder1;Folder2;Folder3;Md5Hash;Path"
+      "header": "Filename;Ext;Size;Date;Total Duration;Duration;Width;Height;Framerate;AspectRatio;Codec;Format;AudioCodec;AudioSampleRate;AudioChannelsFriendly;VideoCodec;VideoRate;VideoResolution;Folder1;Folder2;Folder3;Md5Hash;Path"
     }
   ],
   "mediaplugin": "mediainfo"

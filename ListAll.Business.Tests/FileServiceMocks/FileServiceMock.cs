@@ -53,7 +53,7 @@ public class FileServiceMock : IFileService
     }
 
     //public List<FileDescription> GetFiles(string path, string extension, bool folderRecursive = false, bool getMd5 = false, Func<string, Dictionary<string, string>>? getPropertiesFunc = null /*IMediaPlugin? mediaPlugin = null*/)
-    public List<FileDescription> GetFiles(string path, string extension, bool folderRecursive = false, bool getMd5 = false, IMediaPlugin? mediaPlugin = null)
+    public List<FileDescription> GetFiles(string path, List<string> allowedExtensions, bool folderRecursive = false, bool getMd5 = false, IMediaPlugin? mediaPlugin = null)
     {
         return new List<FileDescription>
         {
