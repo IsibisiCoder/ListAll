@@ -1,4 +1,4 @@
-﻿using Microsoft.Extensions.Hosting;
+﻿/*using Microsoft.Extensions.Hosting;
 
 namespace ListAll.Business.Services;
 
@@ -16,3 +16,4 @@ public class ListAllService : IHostedService
         return Task.CompletedTask;
     }
 }
+*/

@@ -123,4 +123,16 @@
   <data name="DirectoryNotExists" xml:space="preserve">
     <value>The directory {0} does not exists!</value>
   </data>
+  <data name="MediaPluginAvailable" xml:space="preserve">
+    <value>MediaPlugin is available.</value>
+  </data>
+  <data name="MediaPluginNotAvailable" xml:space="preserve">
+    <value>MediaPlugin is not available.</value>
+  </data>
+  <data name="NoOutputfile" xml:space="preserve">
+    <value>No outputfile has been configured!</value>
+  </data>
+  <data name="NoRootDir" xml:space="preserve">
+    <value>No root directory has been configured!</value>
+  </data>
 </root>

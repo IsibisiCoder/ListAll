@@ -12,7 +12,7 @@
     <None Remove="log4net.console.config" />
     <None Remove="Settings\list-directory-csv.json" />
     <None Remove="Settings\list-directory-md.json" />
-    <None Remove="Settings\list-directory-md5-csv.json" />
+    <None Remove="Settings\mediainfo-csv.json" />
     <None Remove="Settings\my-csv.json" />
   </ItemGroup>
 
@@ -26,7 +26,7 @@
     <Content Include="Settings\my-csv.json">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="Settings\list-directory-md5-csv.json">
+    <Content Include="Settings\mediainfo-csv.json">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <Content Include="Settings\list-directory-csv.json">

@@ -10,5 +10,5 @@
       "header": "Filename;Ext;Size;Date;folder1;folder2;folder3;Path"
     }
   ],
-  "mediaplugin": "mediainfo"
+  "mediaplugin": ""
 }

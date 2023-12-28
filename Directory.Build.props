@@ -1,10 +1,10 @@
 ﻿<Project>
   <PropertyGroup>
-    <Version>0.9.1.0</Version>
-    <FileVersion>0.9.1.0</FileVersion>
+    <Version>0.9.9.0</Version>
+    <FileVersion>0.9.9.0</FileVersion>
     <Product>ListAll</Product>
     <Company>Ulf Moeller</Company>
     <Copyright>Ulf Moeller (c) 2023-2024</Copyright>
-    <Authors>Ulf Moeller, Neumuenster, Germany</Authors>
+    <Authors>Ulf Moeller</Authors>
   </PropertyGroup>
 </Project>

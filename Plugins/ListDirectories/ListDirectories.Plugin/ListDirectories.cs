@@ -36,7 +36,7 @@ public class ListDirectories : IPlugin
 
     internal List<string> Extensions { get; set; } = new List<string>();
 
-    internal string SettingPath { get; set; } = @"Settings/list-directory.json";
+    internal string SettingPath { get; set; } = string.Empty;
 
     internal string OutputFormat { get; set; } = string.Empty;
 
@@ -108,15 +108,12 @@ public class ListDirectories : IPlugin
     {
         if (!SourceDirectories.Any())
         {
-            //TODO:Translation
-            //TODO:Unittest
-            Console.WriteLine("No RootDir");
+            Console.WriteLine(_localizer["NoRootDir"]);
             return false;
         }
         if (string.IsNullOrEmpty(OutputFile))
         {
-            //TODO:Translation
-            Console.WriteLine("No outputfile");
+            Console.WriteLine(_localizer["NoOutputfile"]);
             return false;
         }
         return true;
@@ -146,10 +143,10 @@ public class ListDirectories : IPlugin
             if (_serviceProvider != null)
             {
                 mediaPlugin = _serviceProvider.GetKeyedService<IMediaPlugin>(MediaPlugin);
-                _logger.LogDebug($"MediaPlugin available: {MediaPlugin}");
+                _logger.LogDebug($"{_localizer["MediaPluginAvailable"]}: {MediaPlugin}");
                 if (mediaPlugin == null)
                 {
-                    _logger.LogWarning($"MediaPlugin not available: {MediaPlugin}");
+                    _logger.LogWarning($"{_localizer["MediaPluginNotAvailable"]}: {MediaPlugin}");
                 }
             }
 

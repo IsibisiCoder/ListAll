@@ -2,7 +2,7 @@
   "profiles": {
     "ListAll": {
       "commandName": "Project",
-      "commandLineArgs": "--outputfile \"c:\\temp\\listall\\o.csv\" --setting \"Settings\\list-directory-md5-csv.json\" -r -d \"c:\\temp\" --extensions txt"
+      "commandLineArgs": "--outputfile \"c:\\temp\\myfiles.csv\" --setting \"%appdata%\\ListAll\\Settings\\my-csv.json\" -r -d \"c:\\temp\\files\""
     }
   }
 }

@@ -57,8 +57,7 @@ internal class Program
             && (string.IsNullOrEmpty(parserResult.Value.Outputfilename) 
              || string.IsNullOrEmpty(parserResult.Value.RootDir)))
         {
-            //TODO:Translation
-            Console.WriteLine("You have to set Setting or Outputfilename and rootDir!");
+            Console.WriteLine("Neither a settings file nor an output file and a root directory have been configured!");
             return 2;
         }
 

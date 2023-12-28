@@ -77,5 +77,41 @@ namespace Plugin.ListDirectories.Resources {
                 return ResourceManager.GetString("DirectoryNotExists", resourceCulture);
             }
         }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to MediaPlugin is available..
+        /// </summary>
+        internal static string MediaPluginAvailable {
+            get {
+                return ResourceManager.GetString("MediaPluginAvailable", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to MediaPlugin is not available..
+        /// </summary>
+        internal static string MediaPluginNotAvailable {
+            get {
+                return ResourceManager.GetString("MediaPluginNotAvailable", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to No outputfile has been configured!.
+        /// </summary>
+        internal static string NoOutputfile {
+            get {
+                return ResourceManager.GetString("NoOutputfile", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to No root directory has been configured!.
+        /// </summary>
+        internal static string NoRootDir {
+            get {
+                return ResourceManager.GetString("NoRootDir", resourceCulture);
+            }
+        }
     }
 }

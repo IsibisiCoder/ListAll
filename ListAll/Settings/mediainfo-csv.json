@@ -10,5 +10,13 @@
       "header": "Filename;Ext;Size;Date;Total Duration;Duration;Width;Height;Framerate;AspectRatio;Codec;Format;AudioCodec;AudioSampleRate;AudioChannelsFriendly;VideoCodec;VideoRate;VideoResolution;Folder1;Folder2;Folder3;Md5Hash;Path"
     }
   ],
+  "source-directories": [
+    {
+      "directory": "c:\\temp"
+    },
+    {
+      "directory": "c:\\temp2"
+    }
+  ],
   "mediaplugin": "mediainfo"
 }
