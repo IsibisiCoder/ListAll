@@ -85,7 +85,7 @@ public class FileService : IFileService
 
         foreach (var dir in directories)
         {
-            DirectoryInfo dirInfo = new DirectoryInfo(path);
+            DirectoryInfo dirInfo = new DirectoryInfo(dir);
 
             var fd = new FileDescription
             {

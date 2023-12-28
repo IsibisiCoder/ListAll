@@ -103,9 +103,18 @@ internal class Program
         {
             var services = scope?.ServiceProvider;
             var context = services?.GetRequiredService<ListAll.Plugin.ListDirectories.ListDirectories>();
-            context?.SetParameter("OutputFile", parserResult.Value.Outputfilename);
-            context?.SetParameter("RootDir", parserResult.Value.RootDir);
-            context?.SetParameter("SettingPath", parserResult.Value.Setting ?? string.Empty);
+            if (!string.IsNullOrEmpty(parserResult.Value.Outputfilename))
+            {
+                context?.SetParameter("OutputFile", parserResult.Value.Outputfilename);
+            }
+            if (!string.IsNullOrEmpty(parserResult.Value.RootDir))
+            {
+                context?.SetParameter("RootDir", parserResult.Value.RootDir);
+            }
+            if (!string.IsNullOrEmpty(parserResult.Value.Setting))
+            {
+                context?.SetParameter("SettingPath", parserResult.Value.Setting);
+            }
             context?.SetParameter("Recursive", parserResult.Value.Recursive.ToString());
             if (parserResult.Value.Extensions != null)
             {

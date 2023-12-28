@@ -121,8 +121,7 @@ public class ListDirectories : IPlugin
 
     public void Process()
     {
-        if (string.IsNullOrWhiteSpace(OutputFile)) throw new ArgumentNullException(OutputFile);
-        if (string.IsNullOrWhiteSpace(RootDir)) throw new ArgumentNullException(RootDir);
+        GetConfiguration();
 
         if (!CheckParameter())
         {
@@ -130,8 +129,6 @@ public class ListDirectories : IPlugin
         }
 
         _fileService.DirectoryExists(OutputFile, true);
-
-        GetConfiguration();
 
         var allFiles = new List<FileDescription>();
 
