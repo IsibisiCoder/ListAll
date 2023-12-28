@@ -7,7 +7,9 @@
     <AssemblyName>Plguin.$(MSBuildProjectName)</AssemblyName>
   </PropertyGroup>
 
-
+	<ItemGroup>
+		<RuntimeHostConfigurationOption Include="System.Runtime.Loader.UseRidGraph" Value="true" />
+	</ItemGroup>
 
   <ItemGroup>
     <ProjectReference Include="..\..\..\ListAll.Business\ListAll.Business.csproj" />

@@ -6,6 +6,10 @@
     <Nullable>enable</Nullable>
   </PropertyGroup>
 
+	<ItemGroup>
+		<RuntimeHostConfigurationOption Include="System.Runtime.Loader.UseRidGraph" Value="true" />
+	</ItemGroup>
+	
   <ItemGroup>
     <PackageReference Include="MediaInfo.Wrapper.Core" Version="21.9.3" />
     <PackageReference Include="Microsoft.Extensions.Logging" Version="8.0.0" />
