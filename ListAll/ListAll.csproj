@@ -5,6 +5,8 @@
     <TargetFramework>net8.0</TargetFramework>
     <ImplicitUsings>enable</ImplicitUsings>
     <Nullable>enable</Nullable>
+    <PackageReadmeFile>README.md</PackageReadmeFile>
+    <RepositoryUrl>https://github.com/IsibisiCoder/ListAll</RepositoryUrl>
   </PropertyGroup>
 
   <ItemGroup>
@@ -15,9 +17,8 @@
     <None Remove="appsettings.json" />
     <None Remove="log4net.console.config" />
     <None Remove="Settings\list-directory-csv.json" />
-    <None Remove="Settings\list-directory-md.json" />
+	<None Remove="Settings\list-directory-md.json" />
     <None Remove="Settings\mediainfo-csv.json" />
-    <None Remove="Settings\my-csv.json" />
   </ItemGroup>
 
   <ItemGroup>
@@ -27,15 +28,13 @@
     <Content Include="log4net.console.config">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="Settings\mediainfo-csv.json">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Settings\list-directory-csv.json">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Settings\list-directory-md.json">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Include="..\README.md">
+      <Pack>True</Pack>
+      <PackagePath>\</PackagePath>
+    </None>
   </ItemGroup>
 
   <ItemGroup>
@@ -75,6 +74,30 @@
       <Generator>PublicResXFileCodeGenerator</Generator>
       <LastGenOutput>ProgramParameter.Designer.cs</LastGenOutput>
     </EmbeddedResource>
+  </ItemGroup>
+
+  <ItemGroup Condition="'$(CONFIGURATION)' == 'Release'">
+    <None Update="Settings\list-directory-csv.json">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+	<None Update="Settings\mediainfo-csv.json">
+	  <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+	</None>
+	<None Update="Settings\list-directory-md.json">
+	  <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+	</None>
+  </ItemGroup>
+
+  <ItemGroup Condition="'$(CONFIGURATION)' == 'Debug'">
+	<Content Include="Settings\list-directory-csv.json">
+	  <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+	</Content>
+	<Content Include="Settings\mediainfo-csv.json">
+	  <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+	</Content>
+	<Content Include="Settings\list-directory-md.json">
+	  <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+	</Content>
   </ItemGroup>
 
 </Project>

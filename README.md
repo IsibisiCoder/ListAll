@@ -2,6 +2,9 @@
 
 ListAll is a program that reads file or directory names with their properties and saves them in a file as a list.  
 
+__Prerequisite__:  
+Microsoft Framework [.Net Runtime 8.0](https://dotnet.microsoft.com/en-us/download/dotnet/8.0)  
+
 The basic functions are:  
 * Reading in file or directory names of one or more configurable directories
 * Reading can be recursive if required, the directory depth is configurable
@@ -144,7 +147,7 @@ The following value must be entered in the settings:
 
 The following libraries are used to access MediaInfo:  
 
-https://github.com/bpoxy/MP-MediaInfo MP-MediaInfo is .NET wrapper for MediaArea MediaInfo by Yaroslav Tatarenko and use the native packages `MediaInfo.Core.Native` and `MediaInfo.Core.Native`.  
+[MP-MediaInfo](https://github.com/yartat/MP-MediaInfo) is .NET wrapper for MediaArea MediaInfo by Yaroslav Tatarenko and use the native packages `MediaInfo.Core.Native` and `MediaInfo.Core.Native`.  
 The library `MP-MediaInfo` is licensed under the `BSD License`.  
 
 
@@ -152,6 +155,9 @@ The library `MP-MediaInfo` is licensed under the `BSD License`.
 
 ---
 ListAll ist ein Programm, dass Datei- oder Verzeichnisnamen mit seinen Eigenschaften einliest und in einer Datei als Liste speichert.  
+
+__Voraussetzung__:  
+Microsoft Framework [.Net Runtime 8.0](https://dotnet.microsoft.com/en-us/download/dotnet/8.0)  
 
 Die Grundfunktionen sind:  
 * Einlesen von Datei- oder Verzeichnisnamen eines oder mehrerer konfigurierbarer Verzeichnisse
@@ -295,6 +301,6 @@ In den Settings muss folgender Wert eingetragen werden:
 
 Für den Zugriff auf MediaInfo werden folndene Bibliotheken verwendet:  
 
-https://github.com/bpoxy/MP-MediaInfo MP-MediaInfo is .NET wrapper for MediaArea MediaInfo by Yaroslav Tatarenko and use the native packages `MediaInfo.Core.Native` and `MediaInfo.Core.Native`.  
+[MP-MediaInfo](https://github.com/yartat/MP-MediaInfo) is .NET wrapper for MediaArea MediaInfo by Yaroslav Tatarenko and use the native packages `MediaInfo.Core.Native` and `MediaInfo.Core.Native`.  
 Die Bibliothek `MP-MediaInfo` steht unter der `BSD License`.  
 
