@@ -201,18 +201,18 @@ public class ListDirectoriesTest : ListDirectoriesBase
     }
 
     [TestMethod]
-    [ExpectedException(typeof(ArgumentNullException))]
     public void TestProcess_WrongParameter_OutputFile()
     {
         var fileServiceMock = GetTestFileService();
 
         var listDirectories = new ListDirectories(fileServiceMock, _logger, _localizer, null);
 
-        listDirectories.Process();
+        bool success = listDirectories.Process();
+
+        Assert.IsFalse(success);
     }
 
     [TestMethod]
-    [ExpectedException(typeof(ArgumentNullException))]
     public void TestProcess_WrongParameter_RootDir()
     {
         var fileServiceMock = GetTestFileService();
@@ -220,7 +220,9 @@ public class ListDirectoriesTest : ListDirectoriesBase
         var listDirectories = new ListDirectories(fileServiceMock, _logger, _localizer, null);
         listDirectories.SetParameter("OutputFile", "test1");
 
-        listDirectories.Process();
+        var success = listDirectories.Process();
+
+        Assert.IsFalse(success);
     }
 
     [TestMethod]

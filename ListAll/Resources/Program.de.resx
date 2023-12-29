@@ -117,6 +117,9 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
+  <data name="NotSuccessfullyExecuting" xml:space="preserve">
+    <value>Das Programm wurde nicht erfolgreich ausgeführt!</value>
+  </data>
   <data name="Set outputfilename" xml:space="preserve">
     <value>Output-Dateiname</value>
   </data>

@@ -123,7 +123,11 @@ internal class Program
                     context?.SetParameter("Extensions", ext);
                 }
             }
-            context?.Process();
+            var success = context?.Process();
+            if (success == false)
+            {
+                Console.WriteLine(localizer!["NotSuccessfullyExecuting"]);
+            }
         };
 
         return 0;

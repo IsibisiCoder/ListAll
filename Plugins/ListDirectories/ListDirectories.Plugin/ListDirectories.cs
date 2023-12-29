@@ -119,13 +119,13 @@ public class ListDirectories : IPlugin
         return true;
     }
 
-    public void Process()
+    public bool Process()
     {
         GetConfiguration();
 
         if (!CheckParameter())
         {
-            return;
+            return false;
         }
 
         _fileService.DirectoryExists(OutputFile, true);
@@ -177,11 +177,13 @@ public class ListDirectories : IPlugin
             {
                 WriteFileDescription(result, sr, outputFileExists);
             }
+            return true;
         }
         catch (Exception ex)
         {
             _logger.LogError(ex, _localizer["CriticalError"]);
             Console.WriteLine(ex.ToString());
+            return false;
         }
     }
 

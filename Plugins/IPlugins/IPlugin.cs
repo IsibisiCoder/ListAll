@@ -3,7 +3,8 @@
     /// <summary>
     /// Start the process of the plugin
     /// </summary>
-    void Process();
+    /// <returns>process is successfully</returns>
+    bool Process();
 
     /// <summary>
     /// Set one parameter
@@ -11,6 +12,4 @@
     /// <param name="paramName">name of the variable</param>
     /// <param name="paramValue">value</param>
     void SetParameter(string paramName, string paramValue);
-
-    //void SetBuilder();
 }

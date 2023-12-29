@@ -61,6 +61,15 @@ namespace ListAll.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to The program was not executed successfully!.
+        /// </summary>
+        internal static string NotSuccessfullyExecuting {
+            get {
+                return ResourceManager.GetString("NotSuccessfullyExecuting", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Use log4net-Filename: .
         /// </summary>
         internal static string UseLog4netFilename {
