@@ -1,0 +1,17 @@
+{
+  "onlydir": false,
+  "filename-with-extension": false,
+  "extensions": ".mp4 .mkv .avi .flv .csv",
+  "folder-reverse": true,
+  "md5-hash": false,
+  "output": "%Filename%|%FileExtention%|%FileSize%|%CreationTime%|%folder1%|%folder2%|%folder3%",
+  "headers": [
+    {
+      "header": "Filename|Ext|Size|Date|folder1|folder2|folder3"
+    },
+    {
+      "header": "--|--|--|--|--"
+    }
+  ],
+  "mediaplugin": ""
+}

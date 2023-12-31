@@ -1,0 +1,45 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net8.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+    <AssemblyName>Plguin.$(MSBuildProjectName)</AssemblyName>
+  </PropertyGroup>
+
+	<ItemGroup>
+		<RuntimeHostConfigurationOption Include="System.Runtime.Loader.UseRidGraph" Value="true" />
+	</ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\..\ListAll.Business\ListAll.Business.csproj" />
+    <ProjectReference Include="..\..\IPlugins\IPlugins.csproj" />
+    <ProjectReference Include="..\..\MediaInfo\MediaInfo.Plugin\Plugin.MediaInfo.csproj" />
+  </ItemGroup>
+
+
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.Extensions.Localization" Version="8.0.0" />
+  </ItemGroup>
+
+
+
+  <ItemGroup>
+    <Compile Update="Resources\ListDirectories.Designer.cs">
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+      <DependentUpon>ListDirectories.resx</DependentUpon>
+    </Compile>
+  </ItemGroup>
+
+
+
+  <ItemGroup>
+    <EmbeddedResource Update="Resources\ListDirectories.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>ListDirectories.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+  </ItemGroup>
+
+</Project>

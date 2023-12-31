@@ -1,0 +1,28 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net8.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+  </PropertyGroup>
+
+	<ItemGroup>
+		<RuntimeHostConfigurationOption Include="System.Runtime.Loader.UseRidGraph" Value="true" />
+	</ItemGroup>
+	
+  <ItemGroup>
+    <PackageReference Include="MediaInfo.Wrapper.Core" Version="21.9.3" />
+    <PackageReference Include="Microsoft.Extensions.Logging" Version="8.0.0" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\IPlugins\IPlugins.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Reference Include="MediaInfo.Wrapper.Core">
+      <HintPath>..\..\..\..\MP-MediaInfo-master\MediaInfo.Wrapper\bin\Debug\net8.0\MediaInfo.Wrapper.Core.dll</HintPath>
+    </Reference>
+  </ItemGroup>
+
+</Project>
