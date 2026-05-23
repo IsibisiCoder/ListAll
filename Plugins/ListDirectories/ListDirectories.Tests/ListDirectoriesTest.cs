@@ -22,7 +22,6 @@ public class ListDirectoriesTest : ListDirectoriesBase
 
 
     [TestMethod]
-    [ExpectedException (typeof (ArgumentNullException))]
     public void TestSetParameter_ParamIsNull_ArgumentNullException()
     {
         var value = "test";
@@ -31,11 +30,11 @@ public class ListDirectoriesTest : ListDirectoriesBase
 
         var listDirectories = new ListDirectories(fileServiceMock.Object, _logger, _localizer, null);
 
-        listDirectories.SetParameter(null!, value);
+        // Act
+        Assert.ThrowsExactly<ArgumentNullException>(() => listDirectories.SetParameter(null!, value));
     }
 
     [TestMethod]
-    [ExpectedException(typeof(ArgumentNullException))]
     public void TestSetParameter_ParamIsEmpty_ArgumentNullException()
     {
         var value = "test";
@@ -44,11 +43,11 @@ public class ListDirectoriesTest : ListDirectoriesBase
 
         var listDirectories = new ListDirectories(fileServiceMock.Object, _logger, _localizer, null);
 
-        listDirectories.SetParameter(string.Empty, value);
+        // Act
+        Assert.ThrowsExactly<ArgumentNullException>(() => listDirectories.SetParameter(string.Empty, value));
     }
 
     [TestMethod]
-    [ExpectedException(typeof(ArgumentNullException))]
     public void TestSetParameter_ValueIsNull_ArgumentNullException()
     {
         var param = "test";
@@ -57,11 +56,11 @@ public class ListDirectoriesTest : ListDirectoriesBase
 
         var listDirectories = new ListDirectories(fileServiceMock.Object, _logger, _localizer, null);
 
-        listDirectories.SetParameter(param, null!);
+        // Act
+        Assert.ThrowsExactly<ArgumentNullException>(() => listDirectories.SetParameter(param, null!));
     }
 
     [TestMethod]
-    [ExpectedException(typeof(ArgumentNullException))]
     public void TestSetParameter_ValueIsEmpty_ArgumentNullException()
     {
         var param = "test";
@@ -70,7 +69,8 @@ public class ListDirectoriesTest : ListDirectoriesBase
 
         var listDirectories = new ListDirectories(fileServiceMock.Object, _logger, _localizer, null);
 
-        listDirectories.SetParameter(param, string.Empty);
+        // Act
+        Assert.ThrowsExactly<ArgumentNullException>(() => listDirectories.SetParameter(param, string.Empty));
     }
 
     [TestMethod]

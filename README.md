@@ -3,7 +3,7 @@
 ListAll is a program that reads file or directory names with their properties and saves them in a file as a list.  
 
 __Prerequisite__:  
-Microsoft Framework [.Net Runtime 8.0](https://dotnet.microsoft.com/en-us/download/dotnet/8.0)  
+Microsoft Framework [.Net Runtime 10.0](https://dotnet.microsoft.com/en-us/download/dotnet/10.0)  
 
 The basic functions are:  
 * Reading in file or directory names of one or more configurable directories
@@ -157,22 +157,22 @@ The library `MP-MediaInfo` is licensed under the `BSD License`.
 ListAll ist ein Programm, dass Datei- oder Verzeichnisnamen mit seinen Eigenschaften einliest und in einer Datei als Liste speichert.  
 
 __Voraussetzung__:  
-Microsoft Framework [.Net Runtime 8.0](https://dotnet.microsoft.com/en-us/download/dotnet/8.0)  
+Microsoft Framework [.Net Runtime 10.0](https://dotnet.microsoft.com/en-us/download/dotnet/10.0)  
 
 Die Grundfunktionen sind:  
 * Einlesen von Datei- oder Verzeichnisnamen eines oder mehrerer konfigurierbarer Verzeichnisse
 * Das Einlesen kann bei Bedarf rekursiv erfolgen, die Verzeichnistiefe ist konfigurierbar
-* Statt der Dateien innerhalb eines Verzeichnisses können auch nur die Verzeichnisnamen berücksichtigt werden
-* Über eine zusätzliche `Setting`-Datei kann ein Header und auch die auszugebenen Eigenschaften konfigueriert werden
-* Es kann sowohl eine csv, als auch eine markdown-Datei erstellt werden. Bei einer Markdown-Datei können auch mehrere Headerzeilen erfasst werden
+* Statt der Dateien innerhalb eines Verzeichnisses kÃ¶nnen auch nur die Verzeichnisnamen berÃ¼cksichtigt werden
+* Ãœber eine zusÃ¤tzliche `Setting`-Datei kann ein Header und auch die auszugebenen Eigenschaften konfigueriert werden
+* Es kann sowohl eine csv, als auch eine markdown-Datei erstellt werden. Bei einer Markdown-Datei kÃ¶nnen auch mehrere Headerzeilen erfasst werden
 * Bei Bedarf kann ein md5 hash pro Datei berechnet werden
 
-Neben den Grundfunktionen gibt es auch so genannte `MediaPlugins`, an die der Dateiname weitergegeben wird und die dann weitere spezielle Eigenschaften auslesen können.  
+Neben den Grundfunktionen gibt es auch so genannte `MediaPlugins`, an die der Dateiname weitergegeben wird und die dann weitere spezielle Eigenschaften auslesen kÃ¶nnen.  
 Es gibt zurzeit folgende `MediaPlugins`:  
-* MediaInfo - Auslesen von Videoeigenschaften mit Hilfe des Tools `Mediainfo`. Für dieses Plugin ist eine weitere Installation notwendig, siehe unten.  
+* MediaInfo - Auslesen von Videoeigenschaften mit Hilfe des Tools `Mediainfo`. FÃ¼r dieses Plugin ist eine weitere Installation notwendig, siehe unten.  
 
 Das Programm kann per Commandline-Parameter schnell und einfach gestartet werden.  
-Darüberhinaus können alle Commandline-Parameter auch in der `Settings`-Datei konfiguriert werden. Hier sind auch weitere umfangreichere Einstellungsmöglichkeiten vorhanden.  
+DarÃ¼berhinaus kÃ¶nnen alle Commandline-Parameter auch in der `Settings`-Datei konfiguriert werden. Hier sind auch weitere umfangreichere EinstellungsmÃ¶glichkeiten vorhanden.  
 
 ## CommandLine-Parameter beim Aufruf
 
@@ -187,12 +187,12 @@ Parameter|Bedeutung|Beispiel
 -o --outputfile|Die gefundenen Dateien oder Verzeichnisse werden in diese Datei geschrieben|myfiles.csv
 -s --setting|Der Pfad inkl. Dateiname zur Settingdatei.|"Settings\\my-csv.json"
 -r --recursive||Soll die Verzeichnisstruktur rekursiv durchsucht werden|true oder false
--e --extensions|Einschränkung auf Dateiänderungen|Unter Windows mit Angabe von *., also *.txt. Mehrere Extensions werden hintereinander geschrieben: *.txt *.pdf
--d --rootdir|Startverzeichnis für die Dateisuche|"c:\\temp"
+-e --extensions|EinschrÃ¤nkung auf DateiÃ¤nderungen|Unter Windows mit Angabe von *., also *.txt. Mehrere Extensions werden hintereinander geschrieben: *.txt *.pdf
+-d --rootdir|Startverzeichnis fÃ¼r die Dateisuche|"c:\\temp"
 
 ## Settingdatei
 
-In der Settingdatei werden weitere Parameter für die Dateisuche angegeben.  
+In der Settingdatei werden weitere Parameter fÃ¼r die Dateisuche angegeben.  
 Beispiel:  
 
 ```
@@ -224,24 +224,24 @@ Parameter|Bedeutung|Beispiel
 --|--
 onlydir|Es sollen nur die Verzeichnisnamen ausgegeben werden, nicht die Namen der einzelnen Dateien|true oder false
 filename-with-extension|Bei den Dateinamen soll die Dateiendung mit ausgegeben werden|true oder false
-extensions|Folgende Dateiendungen sollen berücksichtigt werden. Wurden bereits Dateiendungen mit den Commandline-Parameter übergeben, so werden diese zusätzlich zu der Liste hinzugefügt. Ein Prüfung auf doppelte Endungen erfolgt __nicht__|*.mp4 *.mkv
-folder-reverse|Die Namen der Verzeichnisse, in dem sich eine Datei befindet, kann über `folder1`, `folder2` usw. ausgegeben werden. (siehe `output`). Über diese Einstellung wird die Ausgabe umgedreht, d.h. in `folder1` wird der direkte Verzeichnisname statt dem Laufwerksbuchstaben (windows) oder dem Mountpiont ausgegeben|true oder false
-md5-hash|Für jede Datei wird der eindeutige md5-hash berechnet|true oder false
-recursive|Soll die Verzeichnisstruktur rekursiv durchsucht werden, dieser Wert überschreibt den gleichnamiger Wert aus dem CommandLine-Parameter|true oder false
-recursive-depth|Wenn `recursive` = true, dann kann hier die max. Ebene eingestellt werden.|-1 = keine Einschränkung, 0 = nur das angegebene Verzeichnis, 1 = eine Ebene Tiefe usw.
-output|Diese Angabe spezifiziert die auszugegebenen Spalten. Die Namen müssen exakt den vorgegebem Muster entsprechen, da diese Platzhalter im Programm per Replace mit den Werten ersetzt werden.|Filename;FileExtention;FileSize
-headers|Hier wird die Kopfzeile angegeben, die als allererstes ausgegeben wird. Existiert die zu schreibende Datei schon, werden die Suchergebnisse an den vorhandenen Inhalt angehängt. Ein Schreiben dieser Kopfzeile erfolgt dann nicht.|"header": "Filename;Ext;Size
-mediaplugin|Über diese Einstellung kann ein seperates MediaPlugin in die Ausgabe eingebunden werden|Name des Plugins
-outputfile|Die gefundenen Dateien oder Verzeichnisse werden in diese Datei geschrieben, wird der Wert in der Settingsdatei angegeben, wird der gleichnamiger Wert aus dem CommandLine-Parameter überschrieben|myfiles.csv
-source-directories|Weitere Verzeichnisses können über diesen Parameter hinzugefügt werden|c:\temp
+extensions|Folgende Dateiendungen sollen berÃ¼cksichtigt werden. Wurden bereits Dateiendungen mit den Commandline-Parameter Ã¼bergeben, so werden diese zusÃ¤tzlich zu der Liste hinzugefÃ¼gt. Ein PrÃ¼fung auf doppelte Endungen erfolgt __nicht__|*.mp4 *.mkv
+folder-reverse|Die Namen der Verzeichnisse, in dem sich eine Datei befindet, kann ï¿½ber `folder1`, `folder2` usw. ausgegeben werden. (siehe `output`). Ãœber diese Einstellung wird die Ausgabe umgedreht, d.h. in `folder1` wird der direkte Verzeichnisname statt dem Laufwerksbuchstaben (windows) oder dem Mountpiont ausgegeben|true oder false
+md5-hash|FÃ¼r jede Datei wird der eindeutige md5-hash berechnet|true oder false
+recursive|Soll die Verzeichnisstruktur rekursiv durchsucht werden, dieser Wert Ã¼berschreibt den gleichnamiger Wert aus dem CommandLine-Parameter|true oder false
+recursive-depth|Wenn `recursive` = true, dann kann hier die max. Ebene eingestellt werden.|-1 = keine EinschrÃ¤nkung, 0 = nur das angegebene Verzeichnis, 1 = eine Ebene Tiefe usw.
+output|Diese Angabe spezifiziert die auszugegebenen Spalten. Die Namen mÃ¼ssen exakt den vorgegebem Muster entsprechen, da diese Platzhalter im Programm per Replace mit den Werten ersetzt werden.|Filename;FileExtention;FileSize
+headers|Hier wird die Kopfzeile angegeben, die als allererstes ausgegeben wird. Existiert die zu schreibende Datei schon, werden die Suchergebnisse an den vorhandenen Inhalt angehÃ¤ngt. Ein Schreiben dieser Kopfzeile erfolgt dann nicht.|"header": "Filename;Ext;Size
+mediaplugin|Ãœber diese Einstellung kann ein seperates MediaPlugin in die Ausgabe eingebunden werden|Name des Plugins
+outputfile|Die gefundenen Dateien oder Verzeichnisse werden in diese Datei geschrieben, wird der Wert in der Settingsdatei angegeben, wird der gleichnamiger Wert aus dem CommandLine-Parameter Ã¼berschrieben|myfiles.csv
+source-directories|Weitere Verzeichnisses kÃ¶nnen Ã¼ber diesen Parameter hinzugefÃ¼gt werden|c:\temp
 
 ## Kopfzeile
 
-Die Kopfzeile wird bei neuen Dateien als allererstes ausgegeben. Existiert die zu schreibende Datei schon, werden die Suchergebnisse an den vorhandenen Inhalt angehängt. Ein Schreiben dieser Kopfzeile erfolgt dann nicht.
+Die Kopfzeile wird bei neuen Dateien als allererstes ausgegeben. Existiert die zu schreibende Datei schon, werden die Suchergebnisse an den vorhandenen Inhalt angehÃ¤ngt. Ein Schreiben dieser Kopfzeile erfolgt dann nicht.
 
 ## Output
 
-Die Output-Angabe spezifiziert die auszugegebenen Spalten. Die Namen müssen exakt den vorgegebem Muster entsprechen, da diese Platzhalter im Programm per Replace mit den Werten ersetzt werden. Außerdem müssen die Parameter immer mit `%` umfasst werden, also z.B. `%Filename`.  
+Die Output-Angabe spezifiziert die auszugegebenen Spalten. Die Namen mÃ¼ssen exakt den vorgegebem Muster entsprechen, da diese Platzhalter im Programm per Replace mit den Werten ersetzt werden. AuÃŸerdem mÃ¼ssen die Parameter immer mit `%` umfasst werden, also z.B. `%Filename`.  
  
 Es gibt folgende Platzhalter:  
 
@@ -249,7 +249,7 @@ Platzhalter|Bedeutung
 --|--
 Filename|Dateinamen, wenn `filename-with-extension` = `false`, dann ohne Dateiendung
 FileExtention|Dateiendung ohne `*`, nur mit einem Punkt und der Endung, also z.B. `.txt`.
-FileSize|Größe
+FileSize|GrÃ¶sse
 CreationTime|Erzeugungsdatum
 folder1,folder2,folder3 etc.|
 Md5Hash|berechneter md5-hash-Wert, sofern der Parameter `md5-hash` auf `true` steht
@@ -257,19 +257,19 @@ Path|kompletter Pfad der Datei
 
 ## mediaplugin
 
-Mittels so genannter MediaPlugins können werden Dateieigenschaften ermittelt und ausgegeben werden.  
-Für die Ausgabe müssen dann in `output` wiederum weitere spezielle Platzhalter eingetragen werden.
+Mittels so genannter MediaPlugins kÃ¶nnen werden Dateieigenschaften ermittelt und ausgegeben werden.  
+FÃ¼r die Ausgabe mÃ¼ssen dann in `output` wiederum weitere spezielle Platzhalter eingetragen werden.
 
 ### Plugin: MediaInfo
 
-Das Plugin `MediaInfo` gibt den Dateinamen an die Bilbiothek des gleichnamigen Programms weiter. Diese Bibliothek ermittelt dann für ein Video weitere Eigenschaften:  
+Das Plugin `MediaInfo` gibt den Dateinamen an die Bilbiothek des gleichnamigen Programms weiter. Diese Bibliothek ermittelt dann fÃ¼r ein Video weitere Eigenschaften:  
 
 Platzhalter|Bedeutung
 --|--
-duration|Länge in Millisekunden 
-inhours:inminutes:inseconds|Die Duration wird in Stunden, Minuten, Sekunden zerlegt und kann über diese Platzhalter ausgegeben werden
+duration|LÃ¤nge in Millisekunden 
+inhours:inminutes:inseconds|Die Duration wird in Stunden, Minuten, Sekunden zerlegt und kann Ã¼ber diese Platzhalter ausgegeben werden
 width|Breite
-height|Höhe
+height|HÃ¶he
 framerate|Framerate
 aspectRatio|z.B. fullscreen oder widescreen
 codec|Codec, wenn vorhanden
@@ -287,7 +287,7 @@ Beipsiel Windows:
 ```
 x64\MediaInfo.dll
 ```
-oder bei älteren Systemen (noch 32 Bit-System):  
+oder bei Ã¤lteren Systemen (noch 32 Bit-System):  
 ```
 x86\MediaInfo.dll
 ```
@@ -299,7 +299,7 @@ In den Settings muss folgender Wert eingetragen werden:
 
 # Verwendete Bibliotheken und Lizenzen
 
-Für den Zugriff auf MediaInfo werden folndene Bibliotheken verwendet:  
+FÃ¼r den Zugriff auf MediaInfo werden folndene Bibliotheken verwendet:  
 
 [MP-MediaInfo](https://github.com/yartat/MP-MediaInfo) is .NET wrapper for MediaArea MediaInfo by Yaroslav Tatarenko and use the native packages `MediaInfo.Core.Native` and `MediaInfo.Core.Native`.  
 Die Bibliothek `MP-MediaInfo` steht unter der `BSD License`.  
